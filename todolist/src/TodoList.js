@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import './style.css' // 引用自己定义的样式,用引号来操作
 
 class TodoList extends Component {
     // 构造函数,由于其他的函数先调用
@@ -14,14 +15,17 @@ class TodoList extends Component {
         return (
             <Fragment>
                 <div>
-                    <input value={this.state.inputValue} onChange={this.handleInputChange.bind(this)} />
+                    <label htmlFor='inputArea'>输入内容:</label>
+                    <input id='inputArea' className='input' value={this.state.inputValue} onChange={this.handleInputChange.bind(this)} />
                     <button onClick={this.handleBtnClick.bind(this)}>提交</button>
                 </div>
                 <ul>
                     {
                         this.state.list.map((item, index) => {
                             // 使用map遍历的时候,最好是为每一项设置一个key值.
-                            return <li key={index} onClick={this.handleItemDelete.bind(this,index)}>{item}</li>
+                            return <li key={index} onClick={this.handleItemDelete.bind(this, index)}
+                                dangerouslySetInnerHTML={{ __html: item }}>
+                            </li>
                         })
                     }
                 </ul>
@@ -33,9 +37,9 @@ class TodoList extends Component {
         //immutable 
         // state 不允许我们做任何的直接的赋值改变
         const list = [...this.state.list];
-        list.splice(index,1);
+        list.splice(index, 1);
         this.setState({
-            list:list
+            list: list
         });
     }
 
