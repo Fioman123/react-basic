@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
-import './style.css' // 引用自己定义的样式,用引号来操作
+import ToDoItem from './ToDoItem';
+import './style.css'; // 引用自己定义的样式,用引号来操作
+
 
 class TodoList extends Component {
     // 构造函数,由于其他的函数先调用
@@ -20,26 +22,28 @@ class TodoList extends Component {
                     <button onClick={this.handleBtnClick.bind(this)}>提交</button>
                 </div>
                 <ul>
-                    {
-                        this.state.list.map((item, index) => {
-                            // 使用map遍历的时候,最好是为每一项设置一个key值.
-                            return <li key={index} onClick={this.handleItemDelete.bind(this, index)}
-                                dangerouslySetInnerHTML={{ __html: item }}>
-                            </li>
-                        })
-                    }
+                    {this.getTodoItem()}
                 </ul>
             </Fragment>
         )
     }
+    getTodoItem() {
+        return this.state.list.map((item, index) => {
+            // 使用map遍历的时候,最好是为每一项设置一个key值.
+            return (
+                <ToDoItem key={index} index={index} content={item} deleteItem={this.handleItemDelete.bind(this)} />
+            )
+        })
+    }
+
     // 删除某一项
     handleItemDelete(index) {
         //immutable 
         // state 不允许我们做任何的直接的赋值改变
-        const list = [...this.state.list];
-        list.splice(index, 1);
-        this.setState({
-            list: list
+        this.setState((prevState)=> {
+            const list = [...prevState.list];
+            list.splice(index,1);
+            return {list}
         });
     }
 
