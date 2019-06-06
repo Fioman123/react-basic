@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import ToDoItem from './ToDoItem';
+import Test from './Test';
 import './style.css'; // 引用自己定义的样式,用引号来操作
 
 
@@ -24,6 +25,7 @@ class TodoList extends Component {
                 <ul>
                     {this.getTodoItem()}
                 </ul>
+                <Test content={this.state.inputValue}></Test>
             </Fragment>
         )
     }
@@ -40,10 +42,10 @@ class TodoList extends Component {
     handleItemDelete(index) {
         //immutable 
         // state 不允许我们做任何的直接的赋值改变
-        this.setState((prevState)=> {
+        this.setState((prevState) => {
             const list = [...prevState.list];
-            list.splice(index,1);
-            return {list}
+            list.splice(index, 1);
+            return { list }
         });
     }
 
